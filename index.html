@@ -1,39 +1,144 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-      #messages { margin-bottom: 40px }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-      $(function () {
-        var socket = io();
-        $('form').submit(function(){
-          socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
-        });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-          window.scrollTo(0, document.body.scrollHeight);
-        });
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+
+
+  <style>
+    html,
+    body {
+      background: rgba(0, 0, 0, 0.05);
+      height: 100%;
+      width: 100%;
+    }
+
+    #inbox {
+      height: 100vh;
+      margin: 0 28%;
+      padding: 0 5%;
+      background: white !important;
+    }
+
+    .mList {
+      height: 330px;
+    }
+
+    .btn-compose {
+      position: absolute;
+      right: 30%;
+      bottom: 5%;
+      z-index: 5;
+    }
+
+    .boundary {
+      margin-top: 15px;
+    }
+
+    .sent {
+      float: right;
+      text-align: center;
+    }
+  </style>
+</head>
+
+
+<body>
+  <!-- the modal -->
+  <div class="ui tiny  modal " id="compose_message">
+    <div class="header">
+      Compose Message
+    </div>
+
+    <div class=" scrolling content ">
+      <div class="ui fluid form">
+          <div class="field">
+              <label>From:</label>
+              <input type="text" id="username" placeholder="Username">
+            </div>
+        <div class="field">
+          <label>To:</label>
+          <input type="text" id="receiever" placeholder="Receiver Name">
+        </div>
+        <div class="field">
+
+          <textarea id="myMessage" placeholder="start typing here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive send  button">
+        Send
+      </div>
+      <div id="clr-msg" class="ui left deny icon red  button ">
+        <span>Cancel</span>
+      </div>
+    </div>
+  </div>
+  <!-- end of modal -->
+  <div id="inbox">
+    <div class=" mList ui">
+      <br>
+      <center>
+        <h2>Inbox</h2>
+      </center>
+      <hr>
+      <div class="messages">
+
+      </div>
+      <br>
+    </div>
+
+    <button class="ui massive btn-compose circular google plus icon button">
+      <i class="comment icon"></i>
+    </button>
+  </div>
+  <!-- scripts -->
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+  <script>
+    $(function () {
+
+      $('.btn-compose').click(function () {
+        $('#compose_message').modal('show');
       });
-    </script>
-  </body>
+
+      var socket = io();
+      $('.send').click(function () {
+        
+        var myMsg = $('#myMessage').val();
+        var receiver = $("#receiever").val();
+        var username = $("#username").val();
+      
+        socket.emit('chat message',{username : username,receiver:receiver,message:myMsg});
+
+        Swal.fire({
+          type: 'success',
+          title: 'Sent Successfully!',
+          backdrop: 'rgba(0, 0, 0, 0.85)'
+        });
+
+        $('.messages').append($('<div>', {
+          class: "sent big ui right pointing green basic label"
+        }).text(myMsg).css("margin-top", "10px", "padding", "5px"), $("<br>"), $("<br>"), $("<br>"));
+
+        $('#myMessage').val('');
+
+      });
+      socket.on(username, function (msg) {
+        $('.messages').append($('<div>', {
+          class: "rcv ui big left pointing red basic label"
+        }).text(msg).css("margin-top", "10px"), $("<br>"));
+      });
+
+    });
+  </script>
+</body>
+
 </html>
