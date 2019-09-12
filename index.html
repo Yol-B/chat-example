@@ -8,17 +8,88 @@
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 
-
   <style>
     html,
     body {
       background: rgba(0, 0, 0, 0.05);
       height: 100%;
       width: 100%;
+      padding: 2% 0;
     }
 
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .box {
+      width: 300px;
+      margin: 50px auto;
+      background: #00bfb6;
+      padding: 20px;
+      text-align: center;
+      font-weight: 900;
+      color: #fff;
+      font-family: arial;
+      position: relative;
+    }
+
+    .sb1:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid #00bfb6;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #00bfb6;
+      border-bottom: 10px solid transparent;
+      right: -19px;
+      top: 6px;
+    }
+
+    .sb2:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid transparent;
+      border-right: 10px solid #00bfb6;
+      border-top: 10px solid #00bfb6;
+      border-bottom: 10px solid transparent;
+      left: -19px;
+      top: 6px;
+    }
+
+    .sb3:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid #00bfb6;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #00bfb6;
+      border-bottom: 10px solid transparent;
+      left: 19px;
+      bottom: -19px;
+    }
+
+    .sb4:before {
+      content: "";
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      border-left: 10px solid transparent;
+      border-right: 10px solid #00bfb6;
+      border-top: 10px solid #00bfb6;
+      border-bottom: 10px solid transparent;
+      right: 19px;
+      bottom: -19px;
+    }
+
+
+
     #inbox {
-      height: 100vh;
+      height: 100%;
       margin: 0 20%;
       padding: 0 5%;
       background: white !important;
@@ -30,22 +101,24 @@
 
     .btn-compose {
       position: absolute;
-      right: 30%;
-      bottom: 5%;
+      right: 22%;
+      bottom: 12%;
       z-index: 5;
     }
 
     .boundary {
       margin-top: 15px;
     }
-    .label{
+
+    .label {
       width: 40%;
     }
+
     .sent {
-      float: right;
-      text-align: center;
+      position: relative;
+      width: 100%;
+      display: block;
     }
-  
   </style>
 </head>
 
@@ -90,8 +163,15 @@
         <h2>Inbox</h2>
       </center>
       <hr>
-      <div class="messages">
 
+      <div class="online-count">
+        <div class="count"></div>
+      </div>
+      <div class="messages">
+        <div class="box sb1">I'm speech bubble</div>
+        <div class="box sb2">I'm speech bubble</div>
+        <div class="box sb3">I'm speech bubble</div>
+        <div class="box sb4">I'm speech bubble</div>
       </div>
       <div class="ui bottom attached tab segment" data-tab="third">
         Third
@@ -120,8 +200,6 @@
           </div>
         </div>
       </div>
-
-
       <br>
     </div>
 
@@ -136,7 +214,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
   <script>
     $(document).ready(function () {
-      var socket = io();
+
 
       $('.btn-compose').attr('disabled', true)
       $('.reg-btn').attr('disabled', true)
@@ -145,11 +223,12 @@
       $("#Myusername").change(function () {
         if ($(this).val() != "") {
           $('.reg-btn').attr('disabled', false)
-          username =  $(this).val();
+          username = $(this).val();
         }
       });
 
       $('.reg-btn').click(function () {
+        var socket = io.connect("http:127.0.0.1/:3000", { query:'loggeduser=1'+ username });
         $('#register').modal('hide');
         $('.btn-compose').attr('disabled', false)
         $('#username').attr('disabled', true)
@@ -164,7 +243,7 @@
       });
 
 
-      $('.menu .item').tab();
+
       $('.send').click(function () {
 
         var myMsg = $('#myMessage').val();
@@ -174,7 +253,7 @@
         }
 
 
-        socket.emit("chat message", { sender: username, receiver: receiver, message: myMsg });
+        socket.emit("message", { sender: username, receiver: receiver, message: myMsg });
 
         Swal.fire({
           type: 'success',
@@ -182,30 +261,33 @@
           backdrop: 'rgba(0, 0, 0, 0.85)'
         });
 
-        $('.messages').append($('<div>', {
-          class: "sent big ui right pointing green basic label"
-        }).text(myMsg).css("margin-top", "10px", "padding", "5px"), $("<br>"), $("<br>"), $("<br>"));
-
+        $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
         $('#myMessage').val('');
         $('#receiver').val('');
 
 
       });
 
-      socket.on("chat message", function (msg) {
-       console.log(msg)
+      socket.on("message", function (msg) {
+
         if (msg.receiver == 'group message') {
+
           $('.messages').append($('<div>', {
-            class: "rcv ui big left pointing red basic label"
-          }).text("group:  "+msg.message).css("margin-top", "10px"), $("<br>"));
-        }else if(msg.receiver == username){
+            class: "message other-message"
+          }).text(msg.sender + msg.message).css("margin-top", "10px"), $("<br>"));
+
+        } else if (msg.receiver == username) {
           $('.messages').append($('<div>', {
-            class: "rcv ui big left pointing red basic label"
-          }).text(msg.sender+" :  "+msg.message).css("margin-top", "10px"), $("<br>"));
+            class: "message other-message"
+          }).text(msg.sender + " :  " + msg.message).css("margin-top", "10px"), $("<br>"));
         }
 
       });
 
+
+      socket.on('online-count', function (data) {
+        $('.count').text("online : " + data.online)
+      })
 
     });
   </script>
