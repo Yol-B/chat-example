@@ -211,7 +211,7 @@
   <script>
     $(document).ready(function () {
 
-      var socket = io();
+      var socket = io({username:"Yol"});
 
       $('.reg-btn').attr('disabled', true)
       var username = "anonymous";
@@ -242,6 +242,9 @@
       $('.send').click(function () {
         var myMsg = $('#myMessage').val();
         var receiver = $("#receiver").val();
+        if (receiver == "") {
+          receiver = "group message";
+        }
         sendMessage({ sender: username, receiver: receiver, message: myMsg })
       });
 
