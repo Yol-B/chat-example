@@ -74,20 +74,6 @@ socket.on('exit_user', (username)=>{
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //utility functions
 
 
