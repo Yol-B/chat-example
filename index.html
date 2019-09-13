@@ -230,7 +230,7 @@
         $('#username').attr('disabled', true)
         $("#username").val(username);
         socket = io();
-        socket.emit('set-online', { user: username })
+        socket.emit('set-online', { username: username })
 
 
       })

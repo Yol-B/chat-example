@@ -3,6 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3001;
 var activeUsers = []
+var $ = require("jquery");
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -26,7 +27,8 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function (e) {
     for (let user = 0; user < activeUsers.length; user++) {
       if (socket.id == activeUsers[user].userId ) {
-        activeUsers.splice($.inArray(activeUsers[user], activeUsers), 1);
+        activeUsers.splice(activeUsers.indexOf(activeUsers[user]), 1);
+        break;
       } 
     }
     console.log(activeUsers)
