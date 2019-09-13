@@ -166,6 +166,7 @@
 
       <div class="online-count">
         <div class="count"></div>
+        <ul id="onlines"></ul>
       </div>
       <div class="messages">
       </div>
@@ -204,14 +205,14 @@
     </button>
   </div>
   <!-- scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
   <script>
     $(document).ready(function () {
 
-      var socket;
+      var socket = io();
 
 
       $('.reg-btn').attr('disabled', true)
@@ -225,14 +226,12 @@
       });
 
       $('.reg-btn').click(function () {
+        $("#Myusername").val("");
         $('#register').modal('hide');
         $('.btn-compose').attr('disabled', false)
         $('#username').attr('disabled', true)
         $("#username").val(username);
-        socket = io();
         socket.emit('set-online', { username: username })
-
-
       })
 
       $('#register').modal('setting', 'closable', false).modal('show');
@@ -251,22 +250,18 @@
       });
 
       socket.on("message", function (msg) {
-
+        alert('newMessage')
         if (msg.receiver == 'group message') {
-
           receiveGroupMessage(msg)
-
         } else if (msg.receiver == username) {
           receivePrivateMessage(msg)
         }
 
       });
 
-      socket.on('online-count', function (data) {
-        countOnline(data);
+      socket.on('online', function (data) {
+        countOnline(data)
       })
-
-      // utility funtions
 
       function sendMessage(message) {
         socket.emit("message", message);
@@ -300,7 +295,14 @@
       function stopTyping(message) { }
 
       function countOnline(data) {
-        $('.count').text("online : " + data.online)
+        console.log(data)
+        $("#onlines").empty()
+        for (let i = 0; i < data.online.length; i++) {
+          $("#onlines").append("<li>").text(data.online.username)
+          
+        }
+        // console.table(data)
+        $('.count').text("online : " + data.online.length)
       }
 
     });

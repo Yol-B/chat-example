@@ -1,38 +1,35 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = process.env.PORT || 3001;
-var activeUsers = []
-var $ = require("jquery");
-
+var port = process.env.PORT || 3000;
+var activeUsers = [];
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-
-
-
 io.on('connection', function (socket) {
   socket.on('set-online', function (user) {
-    activeUsers.push({ userId: socket.id, username: user.username })
+    activeUsers.push({ id: socket.id, username: user.username })
   })
+  setInterval(function () {
+    socket.emit("online", { online: activeUsers })
+  },50)
 
   socket.on('message', function (msg) {
     socket.broadcast.emit("message", { receiver: msg.receiver, message: msg.message, sender: msg.sender });
   });
-  setInterval(function () {
-    socket.emit("online-count", { online: socket.client.conn.server.clientsCount })
-  }, 50)
+
+
 
   socket.on('disconnect', function (e) {
-    for (let user = 0; user < activeUsers.length; user++) {
-      if (socket.id == activeUsers[user].userId ) {
-        activeUsers.splice(activeUsers.indexOf(activeUsers[user]), 1);
-        break;
-      } 
+    for (let i = 0; i < activeUsers.length; i++) {
+      if (activeUsers[i].id == socket.id) {
+        activeUsers.splice(i, 1);
+      }
     }
-    console.log(activeUsers)
+
   })
+
 });
 
 http.listen(port, function () {
