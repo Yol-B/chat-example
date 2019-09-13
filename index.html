@@ -204,14 +204,15 @@
     </button>
   </div>
   <!-- scripts -->
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
   <script>
     $(document).ready(function () {
 
-      var socket = io({username:"Yol"});
+      var socket;
+
 
       $('.reg-btn').attr('disabled', true)
       var username = "anonymous";
@@ -228,6 +229,9 @@
         $('.btn-compose').attr('disabled', false)
         $('#username').attr('disabled', true)
         $("#username").val(username);
+        socket = io();
+        socket.emit('set-online', { user: username })
+
 
       })
 
@@ -236,8 +240,6 @@
       $('.btn-compose').click(function () {
         $('#compose_message').modal('show');
       });
-
-
 
       $('.send').click(function () {
         var myMsg = $('#myMessage').val();
