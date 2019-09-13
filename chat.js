@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-
-    $('.btn-compose').attr('disabled', true)
     $('.reg-btn').attr('disabled', true)
     var username = "anonymous";
 
@@ -35,20 +33,7 @@ $(document).ready(function () {
         if (receiver == "") {
             receiver = 'group message'
         }
-
-        socket.emit("message", { sender: username, receiver: receiver, message: myMsg });
-
-        Swal.fire({
-            type: 'success',
-            title: 'Sent Successfully!',
-            backdrop: 'rgba(0, 0, 0, 0.85)'
-        });
-
-        $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
-        $('#myMessage').val('');
-        $('#receiver').val('');
-
-
+        sendMessage({ sender: username, receiver: receiver, message: myMsg })
     });
 
     socket.on("message", function (msg) {
@@ -67,19 +52,35 @@ $(document).ready(function () {
 
     });
 
-
     socket.on('online-count', function (data) {
-        $('.count').text("online : " + data.online)
+        countOnline(data);
     })
 
     // utility funtions
 
-    function sendMessage(message){}
-    function receivePrivateMessage(message) {}
-    function receiveGroupMessage(message) {}
-    function isTyping(params) {}
-    function stopTyping(params) {}
-    function countOnline(params) {}
-    function getOnline(params) {}
+    function sendMessage(message) {
+        socket.emit("message", message);
+        Swal.fire({
+            type: 'success',
+            title: 'Sent Successfully!',
+            backdrop: 'rgba(0, 0, 0, 0.85)'
+        });
+        logSentMessage(message.message)
+    }
+
+    function logSentMessage(myMsg) {
+        $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
+        $('#myMessage').val('');
+        $('#receiver').val('');
+    }
+
+    function receivePrivateMessage(message) { }
+    function receiveGroupMessage(message) { }
+    function isTyping(message) { }
+    function stopTyping(message) { }
+
+    function countOnline(data) {
+        $('.count').text("online : " + data.online)
+    }
 
 });
