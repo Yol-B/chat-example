@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
   socket.on('set-online', function (user) {
-    console.log(user.user + " is connected!")
+    activeUsers.push({ userId: socket.id, username: user.username })
   })
 
   socket.on('message', function (msg) {
@@ -23,12 +23,15 @@ io.on('connection', function (socket) {
     socket.emit("online-count", { online: socket.client.conn.server.clientsCount })
   }, 50)
 
-  socket.on('disconnect',function(e){
-    console.log("offline : "+socket.id);
+  socket.on('disconnect', function (e) {
+    for (let user = 0; user < activeUsers.length; user++) {
+      if (socket.id == activeUsers[user].userId ) {
+        activeUsers.splice($.inArray(activeUsers[user], activeUsers), 1);
+      } 
+    }
+    console.log(activeUsers)
   })
 });
-
-
 
 http.listen(port, function () {
   console.log('listening on *:' + port);
