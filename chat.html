@@ -5,387 +5,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Chat App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
-    <style>
-        *,
-        *:before,
-        *:after {
-            box-sizing: border-box;
-        }
 
-        body {
-            background: #C5DDEB;
-            font: 14px/20px "Lato", Arial, sans-serif;
-            padding: 40px 0;
-            color: white;
-        }
-
-        .container {
-            margin: 0 auto;
-            padding: 5px;
-            width: 780px;
-            background: #444753;
-            border-radius: 5px;
-        }
-
-        .people-list {
-            width: 260px;
-            float: left;
-            padding: 10px;
-        }
-
-        .people-list .search {
-            padding: 20px;
-        }
-
-        .people-list input {
-            border-radius: 3px;
-            border: none;
-            padding: 14px;
-            color: white;
-            background: #6A6C75;
-            width: 90%;
-            font-size: 14px;
-        }
-
-        li{
-            list-style-type: none;
-        }
-         .people-list ul {
-            padding: 20px;
-            height: 770px;
-        }
-
-        .people-list ul li {
-            padding-bottom: 20px;
-        }
-
-        .people-list ul img {
-            float: left;
-        }
-
-        .people-list ul .about {
-            float: left;
-            margin-top: 8px;
-        }
-
-        .people-list ul .about {
-            padding-left: 8px;
-        }
-
-        .people-list ul .status {
-            color: #92959E;
-        }
-
-
-        .chat {
-            width: 490px;
-            float: left;
-            background: #F2F5F8;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-            color: #434651;
-        }
-
-        .chat .chat-header {
-            padding: 20px;
-            border-bottom: 2px solid white;
-        }
-
-        .chat-header .chat img {
-            float: left;
-        }
-
-        .chat .chat-about {
-            float: left;
-            padding-left: 10px;
-            margin-top: 6px;
-        }
-
-        .chat .chat-with {
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .chat .chat-num-messages {
-            color: #92959E;
-        }
-
-        .chat .fa-star {
-            float: right;
-            color: #D8DADF;
-            font-size: 20px;
-            margin-top: 12px;
-        }
-
-        .chat-history {
-            padding: 30px 30px 20px;
-            border-bottom: 2px solid white;
-            overflow-y: scroll;
-            height: 575px;
-        }
-
-        .chat-history .message-data {
-            margin-bottom: 15px;
-        }
-
-        .message-data-time {
-            color: lighten(#92959E, 8%);
-            padding-left: 6px;
-        }
-
-        .message {
-            color: white;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
-            margin-bottom: 30px;
-            width: 90%;
-            position: relative;
-        }
-
-        .message:after {
-            bottom: 100%;
-            left: 7%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #86BB71;
-            border-width: 10px;
-            margin-left: -10px;
-
-        }
-
-        .my-message {
-            background: #86BB71;
-        }
-
-        .other-message {
-            background: #94C2ED;
-        }
-
-        .other-message :after {
-            border-bottom-color: #94C2ED;
-            left: 93%;
-        }
-
-
-        .chat-message {
-            padding: 30px;
-        }
-
-        .chat-message textarea {
-            width: 100%;
-            border: none;
-            padding: 10px 20px;
-            font: 14px/22px "Lato", Arial, sans-serif;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            resize: none;
-
-        }
-
-        .fa-file-o,
-        .fa-file-image-o {
-            font-size: 16px;
-            color: gray;
-            cursor: pointer;
-
-        }
-
-        .chat-message button {
-            float: right;
-            color: #94C2ED;
-            font-size: 16px;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            background: #F2F5F8;
-        }
-
-        .chat-message:hover {
-            color: darken(#94C2ED, 7%);
-        }
-
-
-
-        .online,
-        .offline,
-        .me {
-            margin-right: 3px;
-            font-size: 10px;
-        }
-
-        .online {
-            color: #86BB71;
-        }
-
-        .offline {
-            color: #E38968;
-        }
-
-        .me {
-            color: #94C2ED;
-        }
-
-        .align-left {
-            text-align: left;
-        }
-
-        .align-right {
-            text-align: right;
-        }
-
-        .float-right {
-            float: right;
-        }
-
-        .clearfix:after {
-            visibility: hidden;
-            display: block;
-            font-size: 0;
-            content: " ";
-            clear: both;
-            height: 0;
-        }
-    </style>
 </head>
 
-
 <body>
-    <div class="container clearfix">
-        <br><br>
-        <div class="people-list" id="people-list">
-            <ul class="list">
-                <li class="clearfix item">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
-                    <div class="about">
-                        <div class="name">Vincent Porter</div>
-                        <div class="status">
-                            <i class="fa fa-circle online"></i> online
-                        </div>
-                    </div>
-                </li>
-
-
-            </ul>
+    <!-- message modal -->
+    <div class="ui tiny  modal " id="compose_message">
+        <div class="header">
+            Compose Message
         </div>
 
-        <div class="chat">
-            <div class="chat-header clearfix">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
-
-                <div class="chat-about">
-                    <div class="chat-with">Chat with Vincent Porter</div>
-                    <div class="chat-num-messages">already 1 902 messages</div>
+        <div class=" scrolling content ">
+            <div class="ui fluid form">
+                <div class="field">
+                    <label>From:</label>
+                    <input type="text" id="username" placeholder="Username">
                 </div>
-                <i class="fa fa-star"></i>
-            </div> <!-- end chat-header -->
+                <div class="field">
+                    <label>To:</label>
+                    <input type="text" id="receiver" placeholder="type 'group message' or a specific username">
+                </div>
+                <div class="field">
 
-            <div class="chat-history">
-                <ul>
-                    <li class="clearfix">
-                        <div class="message-data align-right">
-                            <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
-                            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
-
-                        </div>
-                        <div class="message other-message float-right">
-                            Hi Vincent, how are you? How is the project coming along?
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="message-data">
-                            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-                            <span class="message-data-time">10:12 AM, Today</span>
-                        </div>
-                        <div class="message my-message">
-                            Are we meeting today? Project has been already finished and I have results to show you.
-                        </div>
-                    </li>
-
-                    <li class="clearfix">
-                        <div class="message-data align-right">
-                            <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
-                            <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
-
-                        </div>
-                        <div class="message other-message float-right">
-                            Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you
-                            faced any problems at the last phase of the project?
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="message-data">
-                            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-                            <span class="message-data-time">10:20 AM, Today</span>
-                        </div>
-                        <div class="message my-message">
-                            Actually everything was fine. I'm very excited to show this to our team.
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="message-data">
-                            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-                            <span class="message-data-time">10:31 AM, Today</span>
-                        </div>
-                        <i class="fa fa-circle online"></i>
-                        <i class="fa fa-circle online" style="color: #AED2A6"></i>
-                        <i class="fa fa-circle online" style="color:#DAE9DA"></i>
-                    </li>
-
-                </ul>
-
-            </div> <!-- end chat-history -->
-
-            <div class="chat-message clearfix">
-                <textarea name="message-to-send" id="message-to-send" placeholder="Type your message"
-                    rows="3"></textarea>
-
-                <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
-                <i class="fa fa-file-image-o"></i>
-
-                <button>Send</button>
-
-            </div> <!-- end chat-message -->
-
-        </div> <!-- end chat -->
-
-    </div> <!-- end container -->
-
-    <script id="message-template" type="text/x-handlebars-template">
-      <li class="clearfix">
-        <div class="message-data align-right">
-          <span class="message-data-time" >{{time}}, Today</span> &nbsp; &nbsp;
-          <span class="message-data-name" >Olia</span> <i class="fa fa-circle me"></i>
+                    <textarea id="myMessage" placeholder="start typing here..."></textarea>
+                </div>
+            </div>
         </div>
-        <div class="message other-message float-right">
-          {{messageOutput}}
+        <div class="actions">
+            <div class="ui positive send  button">
+                Send
+            </div>
+            <div id="clr-msg" class="ui left deny icon red  button ">
+                <span>Cancel</span>
+            </div>
         </div>
-      </li>
+    </div>
+    <!-- end of modal -->
+    <div class="ui fluid  center aligned container">
+        <div class="ui segment">
+            <div class="ui two column very relaxed grid">
+                <div class="column">
+
+                </div>
+                <div class="column">
+
+                </div>
+            </div>
+            <div class="ui vertical divider">
+                or
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var socket = io();
+
+
+            $('.reg-btn').attr('disabled', true)
+            var username = "anonymous";
+
+            $("#Myusername").change(function () {
+                if ($(this).val() != "") {
+                    $('.reg-btn').attr('disabled', false)
+                    username = $(this).val();
+                }
+            });
+
+            $('.reg-btn').click(function () {
+                $("#Myusername").val("");
+                $('#register').modal('hide');
+                $('.btn-compose').attr('disabled', false)
+                $('#username').attr('disabled', true)
+                $("#username").val(username);
+                socket.emit('set-online', { username: username })
+            })
+
+            $('#register').modal('setting', 'closable', false).modal('show');
+
+            $('.btn-compose').click(function () {
+                $('#compose_message').modal('show');
+            });
+
+            $('.send').click(function () {
+                var myMsg = $('#myMessage').val();
+                var receiver = $("#receiver").val();
+                if (receiver == "") {
+                    receiver = "group message";
+                }
+                sendMessage({ sender: username, receiver: receiver, message: myMsg })
+            });
+
+            socket.on("message", function (msg) {
+                alert('newMessage')
+                if (msg.receiver == 'group message') {
+                    receiveGroupMessage(msg)
+                } else if (msg.receiver == username) {
+                    receivePrivateMessage(msg)
+                }
+
+            });
+
+            socket.on('online', function (data) {
+                countOnline(data)
+            })
+
+            function sendMessage(message) {
+                socket.emit("message", message);
+                Swal.fire({
+                    type: 'success',
+                    title: 'Sent Successfully!',
+                    backdrop: 'rgba(0, 0, 0, 0.85)'
+                });
+                logSentMessage(message.message)
+            }
+
+            function logSentMessage(myMsg) {
+                $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
+                $('#myMessage').val('');
+                $('#receiver').val('');
+            }
+
+            function receivePrivateMessage(message) {
+                $('.messages').append($('<div>', {
+                    class: "message other-message"
+                }).text(msg.sender + " :  " + msg.message).css("margin-top", "10px"), $("<br>"));
+            }
+
+            function receiveGroupMessage() {
+                $('.messages').append($('<div>', {
+                    class: "message other-message"
+                }).text(message.sender + message.message).css("margin-top", "10px"), $("<br>"));
+            }
+
+            function isTyping(message) { }
+            function stopTyping(message) { }
+
+            function countOnline(data) {
+                $('#onlines').empty()
+                $('.count').text("online : " + data.length)
+                data.forEach(element => {
+                    $('#onlines').append(element.username + "<br>")
+                });
+
+            }
+
+        });
     </script>
-
-    <script id="message-response-template" type="text/x-handlebars-template">
-      <li>
-        <div class="message-data">
-          <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
-          <span class="message-data-time">{{time}}, Today</span>
-        </div>
-        <div class="message my-message">
-          {{response}}
-        </div>
-      </li>
-    </script>
-
 </body>
 
 </html>

@@ -11,113 +11,47 @@
   <style>
     html,
     body {
-      background: rgba(0, 0, 0, 0.05);
+      background: white !important;
       height: 100%;
       width: 100%;
+      /* overflow-y: auto; */
       padding: 2% 0;
     }
 
-    * {
-      margin: 0px;
-      padding: 0px;
+    .card-inbox {
+      height: 500px !important;
+      overflow-y: auto;
+      margin-bottom: 20% !important;
     }
 
-    .box {
-      width: 300px;
-      margin: 50px auto;
-      background: #00bfb6;
-      padding: 20px;
-      text-align: center;
-      font-weight: 900;
-      color: #fff;
-      font-family: arial;
-      position: relative;
-    }
-
-    .sb1:before {
-      content: "";
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      border-left: 10px solid #00bfb6;
-      border-right: 10px solid transparent;
-      border-top: 10px solid #00bfb6;
-      border-bottom: 10px solid transparent;
-      right: -19px;
-      top: 6px;
-    }
-
-    .sb2:before {
-      content: "";
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      border-left: 10px solid transparent;
-      border-right: 10px solid #00bfb6;
-      border-top: 10px solid #00bfb6;
-      border-bottom: 10px solid transparent;
-      left: -19px;
-      top: 6px;
-    }
-
-    .sb3:before {
-      content: "";
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      border-left: 10px solid #00bfb6;
-      border-right: 10px solid transparent;
-      border-top: 10px solid #00bfb6;
-      border-bottom: 10px solid transparent;
-      left: 19px;
-      bottom: -19px;
-    }
-
-    .sb4:before {
-      content: "";
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      border-left: 10px solid transparent;
-      border-right: 10px solid #00bfb6;
-      border-top: 10px solid #00bfb6;
-      border-bottom: 10px solid transparent;
-      right: 19px;
-      bottom: -19px;
-    }
-
-
-
-    #inbox {
-      height: 100%;
-      margin: 0 20%;
-      padding: 0 5%;
-      background: white !important;
-    }
-
-    .mList {
-      height: 330px;
-    }
 
     .btn-compose {
       position: absolute;
-      right: 22%;
-      bottom: 12%;
+      right: 8%;
+      bottom: 5%;
       z-index: 5;
     }
 
-    .boundary {
-      margin-top: 15px;
+    .btn-settings {
+      position: absolute;
+      right: 12%;
+      bottom: 5%;
+      z-index: 6;
     }
 
-    .label {
-      width: 40%;
+    .container-1,
+    .pusher {
+      background: white !important;
     }
 
-    .sent {
-      position: relative;
-      width: 100%;
-      display: block;
+    .sidebar {
+      padding: 10px;
+      width: 150px !important;
+    }
+
+    .user {
+      text-align: justify !important;
+
     }
   </style>
 </head>
@@ -138,11 +72,11 @@
         </div>
         <div class="field">
           <label>To:</label>
-          <input type="text" id="receiver" placeholder="type 'group message' or a specific username">
+          <input type="text" id="receiver" placeholder="type 'all' or a specific username">
         </div>
         <div class="field">
 
-          <textarea id="myMessage" placeholder="start typing here..."></textarea>
+          <textarea id="myMessage" placeholder="Edit the receiver's name or start typing here..."></textarea>
         </div>
       </div>
     </div>
@@ -156,54 +90,84 @@
     </div>
   </div>
   <!-- end of modal -->
-  <div id="inbox">
-    <div class=" mList ui">
-      <br>
-      <center>
-        <h2>Inbox</h2>
-      </center>
-      <hr>
 
-      <div class="online-count">
-        <div class="count"></div>
-        <ul id="onlines"></ul>
-      </div>
-      <div class="messages">
-      </div>
-      <div class="ui bottom attached tab segment" data-tab="third">
-        Third
-      </div>
-      <div class="ui tiny  modal " id="register">
-        <div class="header">
-          Enter Username
+  <div class="ui container .container-1">
+
+    <div class="ui left demo vertical sidebar labeled icon menu">
+      <p class="item header"> <span class="count"></span> </p>
+      <div class="ui list">
+        <div class="item online-users">
+          <p class="ui ">
+            <i class=" green user icon"></i>
+            Yol Torres
+          </p>
         </div>
+      </div>
+    </div>
+    <br>
 
-        <div class=" scrolling content ">
-          <div class="card">
+    <div class="ui stackable two column grid">
+      <div class="column">
 
-            <div class="username Form ui form content">
+        <div class="ui fluid card card-inbox">
+          <div class="content">
+            <div class="center aligned  header">GROUP CHAT INBOX</div>
+            <hr>
+            <div class="groupMessage">
+              <!-- content here -->
 
-              <div class="field">
-                <input type="text" id="Myusername" placeholder="Enter your username to start">
-              </div>
-              <br>
-              <center>
-                <button class="ui reg-btn positive button">
-                  <i class="icon user"></i>
-                  Save
-                </button>
-              </center>
             </div>
           </div>
         </div>
       </div>
-      <br>
+      <!-- column2 -->
+      <div class="column">
+        <div class="ui  fluid card card-inbox">
+          <div class="content ">
+            <div class=" center aligned  header">PRIVATE MESSAGE INBOX</div>
+            <hr>
+            <div class="privateMessage">
+              <!-- content here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- register Form -->
+
+  <div class="ui tiny  modal " id="register">
+    <div class="header">
+      Enter Username
     </div>
 
-    <button class="ui massive btn-compose circular google plus icon button">
-      <i class="comment icon"></i>
-    </button>
+    <div class=" scrolling content ">
+      <div class="card">
+
+        <div class="username Form ui form content">
+
+          <div class="field">
+            <input type="text" id="Myusername" placeholder="Enter your username to start">
+          </div>
+          <br>
+          <center>
+            <button class="ui reg-btn positive button">
+              <i class="icon user"></i>
+              Save
+            </button>
+          </center>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <button class="ui big btn-compose circular orange plus icon button">
+    <i class="plus icon"></i>
+  </button>
+  <button class="circular ui icon green big button btn-settings">
+    <i class="icon bell"></i>
+  </button>
   <!-- scripts -->
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -211,12 +175,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
   <script>
     $(document).ready(function () {
-
+      var isReply = false;
       var socket = io();
-
-
+      $('.ui.labeled.icon.sidebar').sidebar('setting', 'transition', 'overlay');
       $('.reg-btn').attr('disabled', true)
       var username = "anonymous";
+      $('.btn-settings').click(function () {
+        $('.ui.labeled.icon.sidebar').sidebar('toggle');
+
+      })
 
       $("#Myusername").change(function () {
         if ($(this).val() != "") {
@@ -244,17 +211,22 @@
         var myMsg = $('#myMessage').val();
         var receiver = $("#receiver").val();
         if (receiver == "") {
-          receiver = "group message";
+          Swal.fire({
+            type: 'error',
+            title: "Please specify the receiver either 'all' or username of a friend"
+          })
+          $("#receiver").val('all')
+        } else {
+          sendMessage({ sender: username, receiver: receiver, message: myMsg })
         }
-        sendMessage({ sender: username, receiver: receiver, message: myMsg })
       });
 
+
       socket.on("message", function (msg) {
-        alert('newMessage')
-        if (msg.receiver == 'group message') {
-          receiveGroupMessage(msg)
+        if (msg.receiver == 'all') {
+          receiveMessage('.groupMessage', msg)
         } else if (msg.receiver == username) {
-          receivePrivateMessage(msg)
+          receiveMessage('.privateMessage', msg)
         }
 
       });
@@ -262,6 +234,7 @@
       socket.on('online', function (data) {
         countOnline(data)
       })
+
 
       function sendMessage(message) {
         socket.emit("message", message);
@@ -274,35 +247,48 @@
       }
 
       function logSentMessage(myMsg) {
-        $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
+        var inbox ;
+        if (!isReply ) {
+          inbox = '.groupMessage'
+        }else{
+          inbox = '.privateMessage'
+
+        }
+        $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo(inbox);
         $('#myMessage').val('');
         $('#receiver').val('');
       }
 
-      function receivePrivateMessage(message) {
-        $('.messages').append($('<div>', {
+      function receiveMessage(inbox, message) {
+        $('inbox').append($('<div>', {
           class: "message other-message"
         }).text(msg.sender + " :  " + msg.message).css("margin-top", "10px"), $("<br>"));
       }
 
-      function receiveGroupMessage() {
-        $('.messages').append($('<div>', {
-          class: "message other-message"
-        }).text(message.sender + message.message).css("margin-top", "10px"), $("<br>"));
-      }
 
-      function isTyping(message) { }
+      function isTyping(message) {
+
+       }
       function stopTyping(message) { }
 
       function countOnline(data) {
-        console.log(data)
-        $("#onlines").empty()
-        for (let i = 0; i < data.online.length; i++) {
-          $("#onlines").append("<li>").text(data.online.username)
-          
-        }
-        // console.table(data)
-        $('.count').text("online : " + data.online.length)
+        $('.online-users').empty()
+        $('.count').text("Online: " + (data.length - 1))
+        data.forEach(element => {
+          if (username != element.username) {
+            $('<p>', {
+              class: "ui user "
+            }).append("<i class = 'green user icon'></i>", $("<span>", {
+              class: "user-name"
+            }).text(element.username)).appendTo($('.online-users'))
+            $(document).on('click', '.user', function () {
+              isReply = true;
+              $("#receiver").val($(this).text());
+              $('#compose_message').modal('show');
+
+            })
+          }
+        });
       }
 
     });
