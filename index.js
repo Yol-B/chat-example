@@ -11,11 +11,9 @@ io.on('connection', function (socket) {
   socket.on('set-online', function (user) {
     activeUsers.push({ id: socket.id, username: user.username })
     socket.broadcast.emit('joined', user.username)
-    socket.emit("online", activeUsers)
-
-    // setInterval(function () {
-    //   socket.emit("online", activeUsers)
-    // }, 1000)
+    setInterval(function () {
+      socket.emit("online", activeUsers)
+    }, 1000)
 
   })
 
@@ -51,7 +49,6 @@ io.on('connection', function (socket) {
     for (let i = 0; i < activeUsers.length; i++) {
       if (activeUsers[i].id == socket.id) {
         socket.broadcast.emit('leave', activeUsers[i].username)
-        socket.emit("online", activeUsers)
         activeUsers.splice(i, 1);
         break;
       }
