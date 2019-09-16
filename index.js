@@ -47,6 +47,7 @@ io.on('connection', function (socket) {
 
   socket.on('typing', function(username) {
     socket.broadcast.emit('typing', username)
+    
   })
 
   socket.on('disconnect', function (e) {

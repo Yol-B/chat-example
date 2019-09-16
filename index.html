@@ -239,10 +239,10 @@
       //Listen on typing
       socket.on('typing', function (username) {
         $('.user-name').each(function () {
-          if($(this).text() == username){
-            $(this).append("<span>",{
-              id:"typing"
-            }).text($(this).text()+'(typing)')
+          if ($(this).text() == username) {
+            $(this).append("<span>", {
+              id: "typing"
+            }).text($(this).text() + '(typing)')
           }
         });
       })
@@ -318,8 +318,8 @@
         }).css({
           padding: '10px',
           marginTop: '10px',
-          maxWidth:"200px",
-          wordWrap:'break-word',
+          maxWidth: "200px",
+          wordWrap: 'break-word',
           float: 'right'
         }).text("To " + myMsg.receiver + " : " + myMsg.message), '<br clear="all" />');
         $('#myMessage').val('');
@@ -340,8 +340,8 @@
         }).css({
           padding: '10px',
           marginTop: '10px',
-          maxWidth:"200px",
-          wordWrap:'break-word'
+          maxWidth: "200px",
+          wordWrap: 'break-word'
         }).text(message.sender + " :  " + message.message), '<br clear="all" />');
 
       }
