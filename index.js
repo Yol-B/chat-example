@@ -6,7 +6,9 @@ var activeUsers = [];
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
-
+app.get('/chat', function (req, res) {
+  res.sendFile(__dirname + '/chat.html');
+});
 io.on('connection', function (socket) {
   socket.on('set-online', function (user) {
     activeUsers.push({ id: socket.id, username: user.username })
@@ -47,7 +49,7 @@ io.on('connection', function (socket) {
 
   socket.on('typing', function(username) {
     socket.broadcast.emit('typing', username)
-    
+
   })
 
   socket.on('disconnect', function (e) {

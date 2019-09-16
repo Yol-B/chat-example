@@ -5,78 +5,202 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Chat App</title>
+    <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 
+    <style>
+        html,
+        body {
+            background: white !important;
+            height: 100%;
+            width: 100%;
+        }
+
+        .recieve-message {
+            float: left;
+        }
+
+        .my-container {
+            margin: 20px 50px !important;
+        }
+
+        .online-list,
+        .activities,
+        .card-inbox {
+            height: 500px !important;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            padding: 10px;
+            width: 150px !important;
+        }
+
+        .user {
+            text-align: justify !important;
+
+        }
+
+        .segment {
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+        }
+
+        .btn-compose {
+            border-radius: 40px !important;
+        }
+
+        /* this is for chat app */
+
+        .chatarea {
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .chat {
+            margin: 0px;
+            padding: 0px;
+            width: 300px;
+            float: right;
+            border-top-right-radius: 5px;
+            overflow: hidden;
+            margin-right: 30px;
+            box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+        }
+
+        .chathead {
+            width: 300px;
+            padding-top: 13px;
+            padding-left: 10px;
+            margin-bottom: 0 !important;
+            cursor: pointer;
+        }
+
+        .feed {
+            padding: 10px;
+            background-color: #f2f2f2;
+            max-height: 300px;
+            overflow-wrap: break-word;
+            word-wrap: 'break-word' !important;
+            height: 300px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .other,
+        .me {
+            position: relative;
+            margin-top: 10px;
+
+        }
+
+        .messages {
+            max-width: 200px !important;
+            overflow-wrap: break-word;
+            word-wrap: 'break-word' !important
+        }
+
+        .other .segment {
+            min-height: 30px;
+            word-wrap: normal !important;
+            border: 1px solid #E0E0E0;
+            padding: 8px;
+            color: #1a1a1a;
+            margin-top: 10px;
+        }
+
+        .me .segment {
+            min-height: 30px;
+            word-wrap: 'break-word';
+            border: 1px solid #E0E0E0;
+            padding: 8px;
+            float: right;
+            color: #1a1a1a;
+        }
+
+        .messagebox {
+            width: 300px;
+            min-height: 30px;
+            border-top: 1px solid #e0e0e0;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 
+
 <body>
-    <!-- message modal -->
-    <div class="ui tiny  modal " id="compose_message">
-        <div class="header">
-            Compose Message
-        </div>
 
-        <div class=" scrolling content ">
-            <div class="ui fluid form">
-                <div class="field">
-                    <label>From:</label>
-                    <input type="text" id="username" placeholder="Username">
-                </div>
-                <div class="field">
-                    <label>To:</label>
-                    <input type="text" id="receiver" placeholder="type 'group message' or a specific username">
-                </div>
-                <div class="field">
+    <div class="chatarea">
+        <div class="chat">
+            <div class="ui center aligned blue inverted segment chathead " id="chathead">
+                <h5 id="ui chatMate header">GROUP MESSAGE</h5>
+            </div>
+            <div id="togglearea">
+                <div class="feed groupMessage">
 
-                    <textarea id="myMessage" placeholder="start typing here..."></textarea>
                 </div>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui positive send  button">
-                Send
-            </div>
-            <div id="clr-msg" class="ui left deny icon red  button ">
-                <span>Cancel</span>
+                <div class="ui form">
+                    <div class="ui messagebox field">
+                        <div class="ui action input">
+                            <input type="text" id="myMessage" placeholder="your message here...">
+                            <button class="ui small basic blue button send " id="btn-gc">send</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- end of modal -->
-    <div class="ui fluid  center aligned container">
-        <div class="ui segment">
-            <div class="ui two column very relaxed grid">
-                <div class="column">
-
-                </div>
-                <div class="column">
-
-                </div>
-            </div>
-            <div class="ui vertical divider">
-                or
-            </div>
-        </div>
-    </div>
+    <!-- scripts -->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script>
         $(document).ready(function () {
-
+            var isReply = false;
             var socket = io();
-
-
             $('.reg-btn').attr('disabled', true)
             var username = "anonymous";
 
+            var chatApp = $('.chat')
+            console.log((chatApp))
+
             $("#Myusername").change(function () {
                 if ($(this).val() != "") {
-                    $('.reg-btn').attr('disabled', false)
                     username = $(this).val();
+                    socket.emit('check-username', username)
+
+                    socket.on('verify-username', function (reply) {
+                        if (reply == '1') {
+                            $('.reg-btn').attr('disabled', false)
+                        } else {
+                            $('.reg-form').append($('<div>', {
+                                class: "ui name-error pointing red basic label"
+                            }).text("This username is taken!"))
+
+                            $("#Myusername").keydown(function () {
+                                $('.name-error').hide()
+                            })
+                        }
+                    })
                 }
             });
+
+            $('#chathead').click(function () {
+                $('#togglearea').slideToggle();
+            });
+
+            socket.on('joined', function (user) {
+                addActivity(user, "joined")
+            })
+
+            socket.on('leave', function (user) {
+                addActivity(user, "left")
+            })
 
             $('.reg-btn').click(function () {
                 $("#Myusername").val("");
@@ -85,6 +209,7 @@
                 $('#username').attr('disabled', true)
                 $("#username").val(username);
                 socket.emit('set-online', { username: username })
+                addActivity("You", "joined")
             })
 
             $('#register').modal('setting', 'closable', false).modal('show');
@@ -93,67 +218,149 @@
                 $('#compose_message').modal('show');
             });
 
-            $('.send').click(function () {
-                var myMsg = $('#myMessage').val();
+            $('#myMessage').on("keypress", function () {
+                socket.emit('typing', username)
+            })
+
+            //Listen on typing
+            socket.on('typing', function (username) {
+                $('.user-name').each(function () {
+                    if ($(this).text() == username) {
+                        $(this).append("<span>", {
+                            id: "typing"
+                        }).text($(this).text() + '(typing)')
+                    }
+                });
+            })
+
+
+            $('.send').click(function (e) {
                 var receiver = $("#receiver").val();
-                if (receiver == "") {
-                    receiver = "group message";
+
+                if ($(this).attr('id') == "btn-gc") {
+                    isReply = false;
+                    receiver = "all"
                 }
-                sendMessage({ sender: username, receiver: receiver, message: myMsg })
+                var myMsg = $('#myMessage').val();
+                if (receiver == 'all') {
+                    isReply = false;
+                    send();
+                }
+                if (receiver == "") {
+
+                    $('.input-rec').append($('<div>', {
+                        class: "ui rec-error pointing red basic label"
+                    }).text("Please add a receiver"))
+                    $("#receiver").val('all')
+                    $('#receiver').keydown(function () {
+                        $(".rec-error").hide()
+                    })
+                    $('#compose_message').modal('setting', 'hide', false);
+                } else if (receiver != 'all') {
+                    isReply = true;
+                    send();
+                }
+
+                function send() {
+                    sendMessage({ sender: username, receiver: receiver, message: myMsg })
+                }
             });
 
-            socket.on("message", function (msg) {
-                alert('newMessage')
-                if (msg.receiver == 'group message') {
-                    receiveGroupMessage(msg)
-                } else if (msg.receiver == username) {
-                    receivePrivateMessage(msg)
-                }
 
+            socket.on("message", function (msg) {
+                receiveMessage(msg)
             });
 
             socket.on('online', function (data) {
                 countOnline(data)
             })
 
+            function addActivity(user, activity) {
+                var color = 'green'
+                if (activity == 'left') {
+                    color = 'red';
+                }
+                $('<p>', {
+                    class: "ui item"
+                }).append("<i class = '" + color + " circle icon'></i>", $("<span>").text(user + " " + activity + " the room")).appendTo($('.my-activities'))
+            }
+
             function sendMessage(message) {
+
                 socket.emit("message", message);
                 Swal.fire({
                     type: 'success',
                     title: 'Sent Successfully!',
                     backdrop: 'rgba(0, 0, 0, 0.85)'
                 });
-                logSentMessage(message.message)
+                $('#compose_message').modal('hide');
+                logSentMessage(message)
             }
 
-            function logSentMessage(myMsg) {
-                $('<div>', { class: "ui compact message_s message  my-message" }).append($('<p>').text(myMsg)).appendTo('.messages');
+            function logSentMessage(message) {
+                var inbox;
+                if (!isReply) {
+                    inbox = '.groupMessage'
+                } else {
+                    inbox = '.privateMessage'
+                }
+
+
+                $("<div>", {
+                    class: " ui small inverted  grey messages compact segment"
+                }).text( "Me : " + message.message).appendTo($('<div>', {
+                    class: "other"
+                }).appendTo($(inbox)))
+
+
+                // $(inbox).append($('<div>', {
+                //     class: "ui large right pointing blue label "
+                // }).css({
+                //     padding: '10px',
+                //     marginTop: '10px',
+                //     maxWidth: "200px",
+                //     wordWrap: 'break-word',
+                //     float: 'right'
+                // }).text("To " + myMsg.receiver + " : " + myMsg.message), '<br clear="all" />');
                 $('#myMessage').val('');
                 $('#receiver').val('');
+                isReply = false;
             }
 
-            function receivePrivateMessage(message) {
-                $('.messages').append($('<div>', {
-                    class: "message other-message"
-                }).text(msg.sender + " :  " + msg.message).css("margin-top", "10px"), $("<br>"));
-            }
+            function receiveMessage(message) {
+                var inbox = "";
+                if (message.receiver == 'all') {
+                    inbox += '.groupMessage'
+                } else if (message.receiver == username) {
+                    inbox += '.privateMessage'
+                }
 
-            function receiveGroupMessage() {
-                $('.messages').append($('<div>', {
-                    class: "message other-message"
-                }).text(message.sender + message.message).css("margin-top", "10px"), $("<br>"));
+                $("<div>", {
+                    class: " ui  inverted  messages segment"
+                }).text(message.sender + " :  " + message.message).appendTo($('<div>', {
+                    class: "me"
+                }).appendTo($(inbox)))
+                $(inbox).append('<br clear="all">')
             }
-
-            function isTyping(message) { }
-            function stopTyping(message) { }
 
             function countOnline(data) {
-                $('#onlines').empty()
-                $('.count').text("online : " + data.length)
+                $('.online-users').empty()
+                $('.count').text((data.length - 1))
                 data.forEach(element => {
-                    $('#onlines').append(element.username + "<br>")
-                });
+                    if (username != element.username) {
+                        $('<p>', {
+                            class: "ui user item"
+                        }).append("<i class = 'green user icon'></i>", $("<span>", {
+                            class: "user-name"
+                        }).text(element.username)).appendTo($('.online-users'))
+                        $(document).on('click', '.user', function () {
+                            isReply = true;
+                            $("#receiver").val($(this).text());
+                            $('#compose_message').modal('show');
 
+                        })
+                    }
+                });
             }
 
         });

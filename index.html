@@ -50,6 +50,77 @@
     .btn-compose {
       border-radius: 40px !important;
     }
+
+    /* this is for chat app */
+
+    .chatarea {
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .chat {
+      margin: 0px;
+      padding: 0px;
+      width: 250px;
+      float: right;
+      border-top-right-radius: 5px;
+      overflow: hidden;
+      margin-right: 30px;
+      box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
+    }
+
+    .chathead {
+      width: 250px;
+      height: 40px;
+      padding-top: 13px;
+      padding-left: 10px;
+      margin-bottom: 0 !important;
+      cursor: pointer;
+    }
+
+    .feed {
+      padding: 10px;
+      background-color: #f2f2f2;
+      max-height: 300px;
+      height: 300px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    .other,
+    .me {
+      position: relative;
+      margin-top: 10px;
+
+    }
+
+    .other .messages {
+      min-height: 30px;
+      max-width: 180px;
+      border: 1px solid #E0E0E0;
+      padding: 10px;
+      color: #1a1a1a;
+      margin-top: 10px;
+    }
+
+    .me .messages {
+      min-height: 30px;
+      max-width: 180px;
+      border: 1px solid #E0E0E0;
+      padding: 10px;
+      float: right;
+      color: #1a1a1a;
+    }
+
+    .messagebox {
+      min-height: 30px;
+      width: 250px;
+      border-top: 1px solid #e0e0e0;
+      background-color: #ffffff;
+    }
   </style>
 </head>
 
@@ -72,7 +143,6 @@
           <input type="text" id="receiver" placeholder="type 'all' or a specific username">
         </div>
         <div class="field">
-
           <textarea id="myMessage" placeholder="Edit the receiver's name or start typing here..."></textarea>
         </div>
       </div>
@@ -127,7 +197,17 @@
             <div class="center aligned  header">GROUP CHAT INBOX</div>
             <hr>
             <div class="groupMessage">
-              <!-- content here -->
+
+            </div>
+            <div class="chatarea">
+            <div class="ui form">
+              <div class="ui messagebox field">
+                <div class="ui action input">
+                  <input type="text" id="myMessage" placeholder="your message here...">
+                  <button class="ui small basic blue button send " id="btn-gc">send</button>
+                </div>
+              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -186,7 +266,6 @@
       $('.reg-btn').attr('disabled', true)
       var username = "anonymous";
 
-
       $("#Myusername").change(function () {
         if ($(this).val() != "") {
           username = $(this).val();
@@ -207,6 +286,11 @@
           })
         }
       });
+
+      $('#chathead').click(function () {
+        $('#togglearea').slideToggle();
+      });
+
 
       socket.on('joined', function (user) {
         addActivity(user, "joined")

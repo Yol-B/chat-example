@@ -1,0 +1,60 @@
+ <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+                    <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+                    <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+                    <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+                    <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+
+                    <div class="me ">
+                        <div class=" ui  inverted  messages segment">
+                            <p> Hey, never actually done a hangouts on my phone
+                                fdsafdssssssssssssssssssssssssssssssxdzcsdfasdfsadfsadfsdfsdfsdfsdfsssssssssssssssssssssssssssssssss
+                                :</p>
+
+                        </div>
+                    </div>
+                    <br clear="all">
+                    <div class="other">
+                        <div class="ui  compact inverted grey messages segment">
+                            Heyy
+                        </div>
+                    </div>
