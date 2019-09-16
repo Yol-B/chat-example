@@ -45,6 +45,10 @@ io.on('connection', function (socket) {
     socket.broadcast.emit("message", { receiver: msg.receiver, message: msg.message, sender: msg.sender });
   });
 
+  socket.on('typing', function(username) {
+    socket.broadcast.emit('typing', username)
+  })
+
   socket.on('disconnect', function (e) {
     for (let i = 0; i < activeUsers.length; i++) {
       if (activeUsers[i].id == socket.id) {
@@ -59,5 +63,5 @@ io.on('connection', function (socket) {
 });
 
 http.listen(port, function () {
-  console.log('listening on *:' + port);
+  console.log('server started !\nhttp://127.0.0.1:'+port);
 });

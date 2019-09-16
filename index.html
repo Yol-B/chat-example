@@ -232,9 +232,20 @@
         $('#compose_message').modal('show');
       });
 
-      $('#myMessage').keypress(function () {
+      $('#myMessage').on("keypress", function () {
         socket.emit('typing', username)
-      });
+      })
+
+      //Listen on typing
+      socket.on('typing', function (username) {
+        $('.user-name').each(function () {
+          if($(this).text() == username){
+            $(this).append("<span>",{
+              id:"typing"
+            }).text($(this).text()+'(typing)')
+          }
+        });
+      })
 
 
       $('.send').click(function (e) {
@@ -279,10 +290,8 @@
           color = 'red';
         }
         $('<p>', {
-          class: "ui  item"
-        }).append("<i class = '" + color + " circle icon'></i>", $("<span>", {
-          class: "user-name"
-        }).text(user + " " + activity + " the room")).appendTo($('.my-activities'))
+          class: "ui item"
+        }).append("<i class = '" + color + " circle icon'></i>", $("<span>").text(user + " " + activity + " the room")).appendTo($('.my-activities'))
       }
 
       function sendMessage(message) {
@@ -309,6 +318,8 @@
         }).css({
           padding: '10px',
           marginTop: '10px',
+          maxWidth:"200px",
+          wordWrap:'break-word',
           float: 'right'
         }).text("To " + myMsg.receiver + " : " + myMsg.message), '<br clear="all" />');
         $('#myMessage').val('');
@@ -328,17 +339,12 @@
           class: "ui large left pointing teal  label "
         }).css({
           padding: '10px',
-          marginTop: '10px'
+          marginTop: '10px',
+          maxWidth:"200px",
+          wordWrap:'break-word'
         }).text(message.sender + " :  " + message.message), '<br clear="all" />');
 
       }
-
-
-      function isTyping(message) {
-
-
-      }
-      function stopTyping(message) { }
 
       function countOnline(data) {
         $('.online-users').empty()
