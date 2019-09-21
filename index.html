@@ -25,10 +25,12 @@
     }
 
     .online-list,
-    .activities,
-    .card-inbox {
+    .activities {
       height: 500px !important;
       overflow-y: auto;
+    }
+    .msg-card,.dimmer{
+      height: 500px;
     }
 
     .sidebar {
@@ -121,6 +123,268 @@
       border-top: 1px solid #e0e0e0;
       background-color: #ffffff;
     }
+
+    /* SLIDER */
+        
+    .slick-slider {
+            position: relative;
+            display: block;
+            /* box-sizing: border-box; */
+            user-select: none;
+            -webkit-touch-callout: none;
+            -khtml-user-select: none;
+            -ms-touch-action: pan-y;
+            touch-action: pan-y;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .slick-list {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slick-list:focus {
+            outline: none;
+        }
+        
+        .slick-list.dragging {
+            cursor: pointer;
+            cursor: hand;
+        }
+        
+        .slick-slider .slick-track,
+        .slick-slider .slick-list {
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        
+        .slick-track {
+            position: relative;
+            top: 0;
+            left: 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .slick-track:before,
+        .slick-track:after {
+            display: table;
+            content: '';
+        }
+        
+        .slick-track:after {
+            clear: both;
+        }
+        
+        .slick-loading .slick-track {
+            visibility: hidden;
+        }
+        
+        .slick-slide {
+            display: none;
+            float: left;
+            height: 100%;
+            min-height: 1px;
+        }
+        
+        [dir='rtl'] .slick-slide {
+            float: right;
+        }
+        
+    
+        .slick-initialized .slick-slide {
+            display: block;
+        }
+        
+        .slick-loading .slick-slide {
+            visibility: hidden;
+        }
+        
+        .slick-vertical .slick-slide {
+            display: block;
+            height: auto;
+            border: 1px solid transparent;
+        }
+        
+        .slick-arrow.slick-hidden {
+            display: none;
+        }
+        
+       
+        
+        @font-face {
+            font-family: 'slick';
+            font-weight: normal;
+            font-style: normal;
+            src: url('http://kenwheeler.github.io/slick/slick/fonts/slick.eot');
+            src: url('http://kenwheeler.github.io/slick/slick/fonts/slick.eot?#iefix') format('embedded-opentype'), url('http://kenwheeler.github.io/slick/slick/fonts/slick.woff') format('woff'), url('http://kenwheeler.github.io/slick/slick/fonts/slick.ttf') format('truetype'), url('./fonts/slick.svg#slick') format('svg');
+        }
+        /* Arrows */
+        
+        .slick-prev,
+        .slick-next {
+            font-size: 0;
+            line-height: 0;
+            position: absolute;
+            top: 50%;
+            display: block;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            -webkit-transform: translate(0, -50%);
+            -ms-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+            cursor: pointer;
+            color: transparent;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+        
+        .slick-prev:hover,
+        .slick-prev:focus,
+        .slick-next:hover,
+        .slick-next:focus {
+            color: transparent;
+            outline: none;
+            background: transparent;
+        }
+        
+        .slick-prev:hover:before,
+        .slick-prev:focus:before,
+        .slick-next:hover:before,
+        .slick-next:focus:before {
+            opacity: 1;
+        }
+        
+        .slick-prev.slick-disabled:before,
+        .slick-next.slick-disabled:before {
+            opacity: .25;
+        }
+        
+        .slick-prev:before,
+        .slick-next:before {
+            font-family: 'slick';
+            font-size: 20px;
+            line-height: 1;
+            opacity: .75;
+            color: black;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .slick-prev {
+            left: -25px;
+        }
+        
+        [dir='rtl'] .slick-prev {
+            right: -25px;
+            left: auto;
+        }
+        
+        .slick-prev:before {
+            content: '←';
+        }
+        
+        [dir='rtl'] .slick-prev:before {
+            content: '→';
+        }
+        
+        .slick-next {
+            right: -25px;
+        }
+        
+        [dir='rtl'] .slick-next {
+            right: auto;
+            left: -25px;
+        }
+        
+        .slick-next:before {
+            content: '→';
+        }
+        
+        [dir='rtl'] .slick-next:before {
+            content: '←';
+        }
+        /* Dots */
+        
+        .slick-dotted.slick-slider {
+            margin-bottom: 30px;
+        }
+        
+        .slick-dots {
+            position: absolute;
+            bottom: -25px;
+            display: block;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            text-align: center;
+        }
+        
+        .slick-dots li {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            padding: 0;
+            cursor: pointer;
+        }
+        
+        .slick-dots li button {
+            font-size: 0;
+            line-height: 0;
+            display: block;
+            width: 20px;
+            height: 20px;
+            padding: 5px;
+            cursor: pointer;
+            color: transparent;
+            border: 0;
+            outline: none;
+            background: transparent;
+        }
+        
+        .slick-dots li button:hover,
+        .slick-dots li button:focus {
+            outline: none;
+        }
+        
+        .slick-dots li button:hover:before,
+        .slick-dots li button:focus:before {
+            opacity: 1;
+        }
+        
+        .slick-dots li button:before {
+            font-family: 'slick';
+            font-size: 6px;
+            line-height: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            content: '•';
+            text-align: center;
+            opacity: .25;
+            color: black;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .slick-dots li.slick-active button:before {
+            opacity: .75;
+            color: black;
+        }
   </style>
 </head>
 
@@ -191,36 +455,17 @@
         </div>
       </div>
 
-      <div class="five wide column">
-        <div class="ui fluid card card-inbox">
-          <div class="content">
-            <div class="center aligned  header">GROUP CHAT INBOX</div>
-            <hr>
-            <div class="groupMessage">
+      <div class="ten wide column ">
+        <div class="ui card msg-card fluid ">
+          <div class="ui segment my-container" style="min-height: 300px">
+            <div class="ui active dimmer" id="loader" >
+              <div class="ui medium text loader"><br> YOUR MESSGES ARE LOADING . . .</div>
+            </div>
+            <div class="item-slider">
+              <br><br>
+            </div>
+            <br><br><br>
 
-            </div>
-            <div class="chatarea">
-            <div class="ui form">
-              <div class="ui messagebox field">
-                <div class="ui action input">
-                  <input type="text" id="myMessage" placeholder="your message here...">
-                  <button class="ui small basic blue button send " id="btn-gc">send</button>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- column2 -->
-      <div class="five wide column">
-        <div class="ui  fluid card card-inbox">
-          <div class="content ">
-            <div class=" center aligned  header">PRIVATE MESSAGE INBOX</div>
-            <hr>
-            <div class="privateMessage">
-              <!-- content here -->
-            </div>
           </div>
         </div>
       </div>
@@ -254,15 +499,20 @@
     </div>
   </div>
 
+
+
   <!-- scripts -->
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
   <script>
     $(document).ready(function () {
       var isReply = false;
       var socket = io();
+      var cloned = '<div class="ui inbox" > <div class="chat"> <div class="ui center aligned blue segment inverted chathead"> <h5 id="ui chatMate header">GROUP MESSAGE</h5> </div><div class="togglearea"> <div class="feed groupMessage"></div> <div class="ui form"> <div class="ui messagebox field">  <div class="ui action input"> <input type="text" class="myMessage" placeholder="your message here..."><button class="ui small basic black button send " id="btn-gc">send</button>  </div></div>  </div> </div></div></div>';
       $('.reg-btn').attr('disabled', true)
       var username = "anonymous";
 
@@ -287,10 +537,6 @@
         }
       });
 
-      $('#chathead').click(function () {
-        $('#togglearea').slideToggle();
-      });
-
 
       socket.on('joined', function (user) {
         addActivity(user, "joined")
@@ -308,6 +554,7 @@
         $("#username").val(username);
         socket.emit('set-online', { username: username })
         addActivity("You", "joined")
+        init();
       })
 
       $('#register').modal('setting', 'closable', false).modal('show');
@@ -358,6 +605,25 @@
           sendMessage({ sender: username, receiver: receiver, message: myMsg })
         }
       });
+
+      function init() {
+        $('.item-slider').slick({
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          atoplay:false,
+          
+          autoplaySpeed: 5000
+        });
+
+        setTimeout(() => {
+          $('#loader').removeClass('active');
+        }, 800);
+
+        $('.item-slider').slick("slickAdd", cloned)
+        $('.item-slider').slick("slickAdd", cloned)
+        $('.item-slider').slick("slickAdd", cloned)
+        $('.item-slider').slick("slickAdd", cloned)
+      }
 
 
       socket.on("message", function (msg) {

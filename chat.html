@@ -47,7 +47,6 @@
             padding-left: 10px;
             text-align: center;
             margin-bottom: 0 !important;
-            cursor: pointer;
         }
 
         .feed {
@@ -141,13 +140,9 @@
             $('.reg-btn').attr('disabled', true)
             var username = "anonymous";
             var chatApp = $('.chat').html();
-            $('.chathead').click(function () {
-                $('.togglearea').slideToggle();
-            });
+  
             var cloned;
             cloned = chatApp.replace("GROUP MESSAGE", "Yol").replace("groupMessage", "pr-msg Yol Torres")
-            // cloned = chatApp
-            // inbox = "#" + message.sender
             $(".private").append($(cloned))
 
             $('.send').click(function (e) {
