@@ -9,124 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 
     <style>
-        html,
-        body {
-            background: white !important;
-            height: 100%;
-            width: 100%;
-        }
 
-
-        /* this is for chat app */
-
-        .chatarea {
-            position: fixed;
-            bottom: 0px;
-            right: 0px;
-            margin: 0px;
-            padding: 0px;
-        }
-
-        .chat {
-            margin: 0px;
-            padding: 0px;
-            width: 300px;
-            float: right;
-            border-top-right-radius: 5px;
-            overflow: hidden;
-            margin-right: 30px;
-            box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
-        }
-
-        .chathead {
-            width: 300px;
-            padding-top: 13px;
-            height: 40px;
-            background: black;
-            color: white!important;
-            padding-left: 10px;
-            text-align: center;
-            margin-bottom: 0 !important;
-        }
-
-        .feed {
-            padding: 10px;
-            background-color: #f2f2f2;
-            max-height: 300px;
-            width: 100%;
-            overflow-wrap: break-word;
-            word-wrap: 'break-word' !important;
-            height: 300px;
-            overflow-y: scroll;
-            overflow-x: hidden;
-        }
-
-        .other,
-        .me {
-            position: relative;
-            margin-top: 10px;
-
-        }
-
-        .messages {
-            max-width: 200px !important;
-            overflow-wrap: break-word;
-            word-wrap: 'break-word' !important
-        }
-
-        .other .segment {
-            min-height: 30px;
-            word-wrap: normal !important;
-            border: 1px solid #E0E0E0;
-            padding: 8px;
-            color: #1a1a1a;
-            margin-top: 10px;
-        }
-
-        .me .segment {
-            min-height: 30px;
-            word-wrap: 'break-word';
-            border: 1px solid #E0E0E0;
-            padding: 8px;
-            float: right;
-            color: #1a1a1a;
-        }
-
-        .messagebox {
-            width: 300px;
-            min-height: 30px;
-            border-top: 1px solid #e0e0e0;
-            background-color: #ffffff;
-        }
-        .private{
-            float:left;
-        }
     </style>
 </head>
 
 
 <body>
+    <div class="inbox">
+        <br><br>
+        <div class="chatApp">
+            <div class="ui top attached inverted blue chatHeader   label">
+                <h2 class="ui  header ">Chat Header</h2>
+            </div>
+            <div class="messgeLists"></div>
 
-    <div class="chatarea">
-        <div class="chat">
-            <div class="ui center aligned blue chathead chathead">
-                <h5 id="ui chatMate header">GROUP MESSAGE</h5>
+            <div class=" ui blue fluid action  blue input ">
+                <input type="text" class="ui blue" placeholder="your message here...">
+                <div class="ui basic blue button ">Send</div>
             </div>
-            <div class="togglearea">
-                <div class="feed groupMessage">
-                </div>
-                <div class="ui form">
-                    <div class="ui messagebox field">
-                        <div class="ui action input">
-                            <input type="text" class="myMessage" placeholder="your message here...">
-                            <button class="ui small basic black button send " id="btn-gc">send</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="private"></div>
         </div>
-     
     </div>
     <!-- scripts -->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -134,109 +35,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script>
-        $(document).ready(function () {
-            var isReply = false;
-            var socket = io();
-            $('.reg-btn').attr('disabled', true)
-            var username = "anonymous";
-            var chatApp = $('.chat').html();
-  
-            var cloned;
-            cloned = chatApp.replace("GROUP MESSAGE", "Yol").replace("groupMessage", "pr-msg Yol Torres")
-            $(".private").append($(cloned))
-
-            $('.send').click(function (e) {
-                var receiver = $("#receiver").val();
-
-                if ($(this).attr('id') == "btn-gc") {
-                    isReply = false;
-                    receiver = "all"
-                }
-                var myMsg = $('.myMessage').val();
-                if (receiver == 'all') {
-                    isReply = false;
-                    send();
-                }
-                if (receiver == "") {
-
-                    $('.input-rec').append($('<div>', {
-                        class: "ui rec-error pointing red basic label"
-                    }).text("Please add a receiver"))
-                    $("#receiver").val('all')
-                    $('#receiver').keydown(function () {
-                        $(".rec-error").hide()
-                    })
-                    $('#compose_message').modal('setting', 'hide', false);
-                } else if (receiver != 'all') {
-                    isReply = true;
-                    send();
-                }
-
-                function send() {
-                    sendMessage({ sender: username, receiver: receiver, message: myMsg })
-                }
-            });
-
-
-            socket.on("message", function (msg) {
-                receiveMessage(msg)
-            });
-
-            function sendMessage(message) {
-
-                socket.emit("message", message);
-                Swal.fire({
-                    type: 'success',
-                    title: 'Sent Successfully!',
-                    backdrop: 'rgba(0, 0, 0, 0.85)'
-                });
-                $('#compose_message').modal('hide');
-                logSentMessage(message)
-            }
-
-            function logSentMessage(message) {
-                var inbox;
-                if (!isReply) {
-                    inbox = '.groupMessage'
-                } else {
-                    inbox = '.privateMessage'
-                }
-
-
-                $("<div>", {
-                    class: " ui small inverted  grey messages compact segment"
-                }).text("Me : " + message.message).appendTo($('<div>', {
-                    class: "other"
-                }).appendTo($(inbox)))
-                $('.myMessage').val('');
-                $('#receiver').val('');
-                isReply = false;
-            }
-
-            function receiveMessage(message) {
-                var inbox = "";
-                var cloned;
-                if (message.receiver == 'all') {
-
-                    inbox += '.groupMessage'
-
-                } else if (message.receiver == username) {
-                    cloned = chatApp.replace("GROUP MESSAGE", message.sender)
-                    cloned = chatApp.replace("groupMessage", message.sender)
-                    inbox = "#" + message.sender
-                    $(".chatarea").append(cloned)
-                }
-
-                $("<div>", {
-                    class: " ui  inverted  messages segment"
-                }).text(message.sender + " :  " + message.message).appendTo($('<div>', {
-                    class: "me"
-                }).appendTo($(inbox)))
-                $(inbox).append('<br clear="all">')
-            }
-
-
-        });
     </script>
 </body>
 
