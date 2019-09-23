@@ -73,75 +73,6 @@
         .formss {
             background: #E8E8E8;
         }
-        /* this is for chat app */
-        /* .chatarea {
-      position: fixed;
-      bottom: 0px;
-      right: 0px;
-      margin: 0px;
-      padding: 0px;
-    }
-
-    .chat {
-      margin: 0px;
-      padding: 0px;
-      width: 250px;
-      float: right;
-      border-top-right-radius: 5px;
-      overflow: hidden;
-      margin-right: 30px;
-      box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.75);
-    }
-
-    .chathead {
-      width: 250px;
-      height: 40px;
-      padding-top: 13px;
-      padding-left: 10px;
-      margin-bottom: 0 !important;
-      cursor: pointer;
-    }
-
-    .feed {
-      padding: 10px;
-      background-color: #f2f2f2;
-      max-height: 300px;
-      height: 300px;
-      overflow-y: scroll;
-      overflow-x: hidden;
-    }
-
-    .other,
-    .me {
-      position: relative;
-      margin-top: 10px;
-
-    }
-
-    .other .messages {
-      min-height: 30px;
-      max-width: 180px;
-      border: 1px solid #E0E0E0;
-      padding: 10px;
-      color: #1a1a1a;
-      margin-top: 10px;
-    }
-
-    .me .messages {
-      min-height: 30px;
-      max-width: 180px;
-      border: 1px solid #E0E0E0;
-      padding: 10px;
-      float: right;
-      color: #1a1a1a;
-    }
-
-    .messagebox {
-      min-height: 30px;
-      width: 250px;
-      border-top: 1px solid #e0e0e0;
-      background-color: #ffffff;
-    } */
         /* SLIDER */
         
         .slick-slider {
@@ -409,37 +340,6 @@
 
 
 <body>
-    <!-- the modal -->
-    <div class="ui tiny  modal " id="compose_message">
-        <div class="header">
-            Compose Message
-        </div>
-
-        <div class=" scrolling content ">
-            <div class="ui fluid form">
-                <div class="field">
-                    <label>From:</label>
-                    <input type="text" id="username" placeholder="Username">
-                </div>
-                <div class="field input-rec">
-                    <label>To:</label>
-                    <input type="text" id="receiver" placeholder="type 'all' or a specific username">
-                </div>
-                <div class="field">
-                    <textarea id="myMessage" placeholder="Edit the receiver's name or start typing here..."></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui green send  button">
-                Send
-            </div>
-            <div id="clr-msg" class="ui left deny icon red  button ">
-                <span>Cancel</span>
-            </div>
-        </div>
-    </div>
-    <!-- end of modal -->
 
     <div class="ui my-container">
         <div class="ui clearing segment">
@@ -528,9 +428,9 @@
                 <span class="ui  header ">Group Chat <br> </span>
             </div>
             <div class="messgeLists" id="groupchat-msg"></div>
-            <div class=" ui blue fluid action  blue input ">
-                <input type="text" class="ui blue" id="groupmsg" placeholder="your message here...">
-                <div class="ui labeled button sendMe" reciever="receiver_gc">
+            <div class=" ui blue fluid action  blue input form-area ">
+                <input type="text" class="ui blue message-gc" message="groupmsg" placeholder="your message here...">
+                <div class="ui labeled button sendMe" receiver="receiver_gc">
                     <div class="ui blue button">
                         <i class="send icon"></i> Send
                     </div>
@@ -579,10 +479,10 @@
 
 
             socket.on('joined', function(user) {
-                if (!user == username) {
-                    addActivity(user, "joined")
-                } else {
+                if (user == username) {
                     addActivity("You", "joined")
+                } else {
+                    addActivity(user, "joined")
                 }
             })
 
@@ -604,11 +504,7 @@
 
             $('#register').modal('setting', 'closable', false).modal('show');
 
-            $('.btn-compose').click(function() {
-                $('#compose_message').modal('show');
-            });
-
-            $('#myMessage').on("keypress", function() {
+            $('input').on("keypress", function() {
                 socket.emit('typing', username)
             })
 
@@ -625,20 +521,19 @@
 
 
             $(document).on('click', '.sendMe', function(e) {
-                var myMsg = $('#myMessage').val();
-                var inbox;
-                var receiver = $(this).attr('receiver').split("_")[1]
+                var receiver = $(this).attr("receiver").split("_")[1]
+                var message = $(this).closest("div.form-area").find("input").val();
                 if (receiver == 'gc') {
-                    inbox = ".groupchat-msg"
+                    inbox = "#groupchat-msg"
                 } else {
-                    inbox = receiver + "-msg"
+                    inbox = "#" + receiver + "-msg"
                 }
-
                 sendMessage({
                     sender: username,
                     receiver: receiver,
-                    message: myMsg
+                    message: message
                 }, inbox)
+                $(this).closest("div.form-area").find("input").val("")
             });
 
             function init() {
@@ -680,8 +575,7 @@
                     title: 'Sent Successfully!',
                     backdrop: 'rgba(0, 0, 0, 0.85)'
                 });
-                $('#compose_message').modal('hide');
-                logSentMessage(message)
+                logSentMessage(message, inbox)
             }
 
             function logSentMessage(myMsg, inbox) {
@@ -694,7 +588,7 @@
                     maxWidth: "200px",
                     wordWrap: 'break-word',
                     float: 'right'
-                }).text("To " + myMsg.receiver + " : " + myMsg.message), '<br clear="all" />');
+                }).text(myMsg.message), '<br clear="all" />');
                 $('#myMessage').val('');
                 $('#receiver').val('');
             }
@@ -726,7 +620,7 @@
                 $('.count').text((data.length - 1))
                 data.forEach(user => {
                     if (username != user) {
-                        var chatBox = cloned.replace("Group Chat", user).replace("groupchat-msg", user + "-msg").replace("receiver_gc", "receiver_" + user).replace("template", "").replace("groupmsg", "private_" + user)
+                        var chatBox = cloned.replace("Group Chat", user).replace("groupchat-msg", user + "-msg").replace("receiver_gc", "receiver_" + user).replace("template", "").replace("groupmsg", "private_" + user).replace("message-gc", "message-" + user)
                         $(".item-slider").slick('slickAdd', chatBox)
                         $('<p>', {
                             class: "ui user item"
