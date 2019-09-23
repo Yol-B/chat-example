@@ -400,6 +400,10 @@
             opacity: .75;
             color: black;
         }
+        
+        .template {
+            display: none;
+        }
     </style>
 </head>
 
@@ -477,39 +481,7 @@
                             <div class="ui medium text loader"><br> YOUR MESSGES ARE LOADING . . .</div>
                         </div>
                         <div class="item-slider">
-                            <div class="inbox">
-                                <div class="chatApp">
-                                    <div class="ui top  inverted blue chatHeader   segment">
-                                        <button class="circular basic inverted ui icon mini button">
-                                          <i class="icon users "></i> 
-                                         </button>
-                                        <span class="ui  header ">Group Chat <br> </span>
-                                    </div>
-                                    <div class="messgeLists" id="groupchat-msg"></div>
-                                    <!-- <div class=" ui blue fluid action  blue input ">
-                                        <input type="text" class="ui blue" id="groupmsg" placeholder="your message here...">
-                                        <div class="ui labeled button sendMe" id="gc">
-                                            <div class="ui blue button">
-                                                <i class="send icon"></i> Send
-                                            </div>
 
-                                        </div>
-                                    </div> -->
-                                    <div class="ui form formss">
-                                        <div class="inline fields">
-                                            <div class="three wide field">
-                                                <input type="text" placeholder="Receiver">
-                                            </div>
-                                            <div class="twelve wide field">
-                                                <input type="text" placeholder="Message">
-                                            </div>
-                                            <div class="two wide field">
-                                                <input type="button" class="ui blue button" value="send">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                         <br><br><br>
@@ -547,6 +519,28 @@
         </div>
     </div>
 
+    <div class="inbox template">
+        <div class="chatApp">
+            <div class="ui top  inverted blue chatHeader   segment">
+                <button class="circular basic inverted ui icon mini button">
+                  <i class="icon users "></i> 
+                 </button>
+                <span class="ui  header ">Group Chat <br> </span>
+            </div>
+            <div class="messgeLists" id="groupchat-msg"></div>
+            <div class=" ui blue fluid action  blue input ">
+                <input type="text" class="ui blue" id="groupmsg" placeholder="your message here...">
+                <div class="ui labeled button sendMe" reciever="receiver_gc">
+                    <div class="ui blue button">
+                        <i class="send icon"></i> Send
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
 
     <!-- scripts -->
@@ -558,7 +552,6 @@
 
     <script>
         $(document).ready(function() {
-            var isReply = false;
             var socket = io();
             var cloned = $(".inbox").html();
             $('.reg-btn').attr('disabled', true)
@@ -568,7 +561,6 @@
                 if ($(this).val() != "") {
                     username = $(this).val();
                     socket.emit('check-username', username)
-
                     socket.on('verify-username', function(reply) {
                         if (reply == '1') {
                             $('.reg-btn').attr('disabled', false)
@@ -587,7 +579,11 @@
 
 
             socket.on('joined', function(user) {
-                addActivity(user, "joined")
+                if (!user == username) {
+                    addActivity(user, "joined")
+                } else {
+                    addActivity("You", "joined")
+                }
             })
 
             socket.on('leave', function(user) {
@@ -603,7 +599,6 @@
                 socket.emit('set-online', {
                     username: username
                 })
-                addActivity("You", "joined")
                 init();
             })
 
@@ -631,22 +626,19 @@
 
             $(document).on('click', '.sendMe', function(e) {
                 var myMsg = $('#myMessage').val();
-                var receiver = $(this).attr('id')
+                var inbox;
+                var receiver = $(this).attr('receiver').split("_")[1]
                 if (receiver == 'gc') {
-                    isReply = false;
-                    send();
-                } else if (receiver != 'gc') {
-                    isReply = true;
-                    send();
+                    inbox = ".groupchat-msg"
+                } else {
+                    inbox = receiver + "-msg"
                 }
 
-                function send() {
-                    sendMessage({
-                        sender: username,
-                        receiver: receiver,
-                        message: myMsg
-                    })
-                }
+                sendMessage({
+                    sender: username,
+                    receiver: receiver,
+                    message: myMsg
+                }, inbox)
             });
 
             function init() {
@@ -657,12 +649,11 @@
                     atoplay: false
                 });
 
-                setTimeout(() => {
+                setTimeout(function() {
                     $('#loader').removeClass('active');
                 }, 800);
 
             }
-
 
             socket.on("message", function(msg) {
                 receiveMessage(msg)
@@ -682,8 +673,7 @@
                 }).append("<i class = '" + color + " circle icon'></i>", $("<span>").text(user + " " + activity + " the room")).appendTo($('.my-activities'))
             }
 
-            function sendMessage(message) {
-
+            function sendMessage(message, inbox) {
                 socket.emit("message", message);
                 Swal.fire({
                     type: 'success',
@@ -694,13 +684,8 @@
                 logSentMessage(message)
             }
 
-            function logSentMessage(myMsg) {
+            function logSentMessage(myMsg, inbox) {
                 var inbox;
-                if (!isReply) {
-                    inbox = '.groupMessage'
-                } else {
-                    inbox = '.privateMessage'
-                }
                 $(inbox).append($('<div>', {
                     class: "ui large right pointing blue label "
                 }).css({
@@ -712,7 +697,6 @@
                 }).text("To " + myMsg.receiver + " : " + myMsg.message), '<br clear="all" />');
                 $('#myMessage').val('');
                 $('#receiver').val('');
-                isReply = false;
             }
 
             function receiveMessage(message) {
@@ -735,27 +719,27 @@
             }
 
             function countOnline(data) {
+                cloned = cloned.replace("template", "")
                 $('.online-users').empty()
+                $('.item-slider').slick('slickRemove', null, null, true);
+                $(".item-slider").slick('slickAdd', cloned)
                 $('.count').text((data.length - 1))
-                data.forEach(element => {
-                    if (username != element.username) {
+                data.forEach(user => {
+                    if (username != user) {
+                        var chatBox = cloned.replace("Group Chat", user).replace("groupchat-msg", user + "-msg").replace("receiver_gc", "receiver_" + user).replace("template", "").replace("groupmsg", "private_" + user)
+                        $(".item-slider").slick('slickAdd', chatBox)
                         $('<p>', {
                             class: "ui user item"
                         }).append("<i class = 'green user icon'></i>", $("<span>", {
                             class: "user-name"
-                        }).text(element.username)).appendTo($('.online-users'))
-                        $(document).on('click', '.user', function() {
-                            isReply = true;
-                            $("#receiver").val($(this).text());
-                            $('#compose_message').modal('show');
+                        }).text(user)).appendTo($('.online-users'))
 
-                        })
                     }
                 });
             }
-
         });
     </script>
 </body>
+
 
 </html>
