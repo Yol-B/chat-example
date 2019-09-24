@@ -44,8 +44,8 @@ io.on('connection', function(socket) {
 
 
     socket.on('message', function(msg) {
-        console.log(msg.receiver)
-        socket.broadcast.emit(msg.receiver, { message: msg.message, sender: msg.sender });
+        // console.log(msg.receiver)
+        socket.broadcast.emit("broadcastMessage", msg);
     });
 
     socket.on('typing', function(username) {
@@ -62,7 +62,7 @@ io.on('connection', function(socket) {
             }
 
         }
-        io.emit("online", activeUsers)
+        io.emit("logout", socket.id)
     })
 });
 
