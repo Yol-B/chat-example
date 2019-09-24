@@ -1,9 +1,19 @@
-body,html {
-    background: #007bff;
-    height:100%;
+body,
+html {
+    background: url("main.jpg");
+    height: 100%;
     overflow: hidden;
-  }
-.card{}
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center
+}
+
+.ui.dimmer {
+    background: url("reg.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center
+}
 
 .recieve-message {
     float: left;
