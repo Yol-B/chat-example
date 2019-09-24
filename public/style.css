@@ -1,9 +1,9 @@
-html,
-body {
-    background: white !important;
-    height: 100%;
-    width: 100%;
-}
+body,html {
+    background: #007bff;
+    height:100%;
+    overflow: hidden;
+  }
+.card{}
 
 .recieve-message {
     float: left;

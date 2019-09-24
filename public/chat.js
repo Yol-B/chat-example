@@ -68,9 +68,9 @@ $(document).ready(function () {
                 }).text($(this).text() + '(typing)')
             }
         });
-      setTimeout(function () {
-          $(".user-name").text($(".user-name").text().replace("(typing)",""))
-      },1500)
+        setTimeout(function () {
+            $(".user-name").text($(".user-name").text().replace("(typing)", ""))
+        }, 1500)
     })
 
 
@@ -191,4 +191,5 @@ $(document).ready(function () {
             }
         });
     }
-});
+
+})

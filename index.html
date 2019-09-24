@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-<br><br>
+<body id="body">
+    <br><br>
+    <br><br>
     <div class="ui my-container">
         <div class="ui stackable four column grid">
             <div class="three wide column">
@@ -75,10 +76,10 @@
                     </div>
                     <br>
                     <center>
-                        <button class="ui reg-btn positive button">
-              <i class="icon user"></i>
-              Save
-            </button>
+                        <button class="ui reg-btn blue button">
+                            <i class="icon user"></i>
+                            Save
+                        </button>
                     </center>
                 </div>
             </div>
@@ -89,8 +90,8 @@
         <div class="chatApp">
             <div class="ui top  inverted blue chatHeader   segment">
                 <button class="circular basic inverted ui icon mini button">
-                  <i class="icon users "></i> 
-                 </button>
+                    <i class="icon users "></i>
+                </button>
                 <span class="ui  header ">Group Chat <br> </span>
             </div>
             <div class="messgeLists" id="groupchat-msg"></div>
@@ -116,6 +117,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="chat.js"></script>
+    <script src="dots.js"></script>
+    <script src="bg.js"></script>
+
+    <script>
+    	$('#body').polygonizr();
+
+    </script>
+
 </body>
 
 
